@@ -3,8 +3,12 @@ use pancurses::{
     COLOR_CYAN, COLOR_GREEN, COLOR_PAIR, COLOR_RED, COLOR_WHITE,
 };
 use rand::Rng;
+use std::env;
 mod snek;
 use snek::{Direction, Food, Snake};
+
+mod users_and_scores;
+use users_and_scores::{get_highscore, set_new_highscore};
 
 fn print_border(window: &pancurses::Window, my: i32, mx: i32) {
     for x in 0..mx + 1 {
@@ -24,7 +28,7 @@ fn main() {
     window.refresh();
     window.nodelay(true);
     curs_set(0);
-    window.timeout(150);
+    window.timeout(100);
 
     // Getting Window parameters
     let (my, mx) = window.get_max_yx();
@@ -60,11 +64,16 @@ fn main() {
     food.draw_food(&window);
 
     // Score
-    let mut score: u32 = 0;
+    let mut score: u64 = 0;
 
     // Drawing border
     window.attron(COLOR_PAIR(3));
     print_border(&window, my, mx);
+
+    // Getting user name
+    let user_name = env::args().nth(1).expect("");
+    let mut highscore = get_highscore(&user_name).unwrap();
+    let mut new_highscore = false;
 
     // GAME LOOP
     loop {
@@ -84,11 +93,16 @@ fn main() {
         // Printin score
         window.attron(COLOR_PAIR(3));
         window.mvprintw(1, 0, format!("SCORE: {}", score));
+        window.mvprintw(1, mx / 2 - 7, format!("HIGHSCORE: {}", highscore));
         window.mvprintw(1, mx - 15, format!("Press Q to quit"));
 
         // Checking if snake has eaten food
         if snake.check_food_eat(&food, &window) {
             score += 1;
+            if score >= highscore {
+                highscore = score;
+                new_highscore = true;
+            }
 
             // Generating new food
             loop {
@@ -119,5 +133,9 @@ fn main() {
     }
     endwin();
     println!("GAME OVER!!");
+    if new_highscore {
+        set_new_highscore(&user_name, highscore);
+        println!("New Highscore: {}", highscore);
+    }
     println!("Your score was {}", score);
 }
