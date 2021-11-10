@@ -71,9 +71,15 @@ fn main() {
     print_border(&window, my, mx);
 
     // Getting user name
-    let user_name = env::args().nth(1).expect("");
-    let mut highscore = get_highscore(&user_name).unwrap();
+    let player_name = match env::args().nth(1) {
+        Some(name) => name,
+        None => String::from(""),
+    };
+    let mut highscore = get_highscore(&player_name).unwrap();
     let mut new_highscore = false;
+    if player_name == "" {
+        window.mvprintw(1, mx / 2 - 10, format!("PLAYING ANONYMUSLY"));
+    }
 
     // GAME LOOP
     loop {
@@ -93,7 +99,12 @@ fn main() {
         // Printin score
         window.attron(COLOR_PAIR(3));
         window.mvprintw(1, 0, format!("SCORE: {}", score));
-        window.mvprintw(1, mx / 2 - 7, format!("HIGHSCORE: {}", highscore));
+
+        // Display high score only if player is not anonymus
+        if player_name != "" {
+            window.mvprintw(1, mx / 2 - 7, format!("HIGHSCORE: {}", highscore));
+        }
+
         window.mvprintw(1, mx - 15, format!("Press Q to quit"));
 
         // Checking if snake has eaten food
@@ -132,10 +143,14 @@ fn main() {
         }
     }
     endwin();
+
     println!("GAME OVER!!");
-    if new_highscore {
-        set_new_highscore(&user_name, highscore);
+
+    // See if new highscore is made and player is not anonymus
+    if (new_highscore) && (player_name != "") {
+        set_new_highscore(&player_name, highscore);
         println!("New Highscore: {}", highscore);
     }
+
     println!("Your score was {}", score);
 }

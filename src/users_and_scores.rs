@@ -4,7 +4,12 @@ use std::fs::{write, File, OpenOptions};
 use std::io::{Read, Seek};
 use std::path::Path;
 
-pub fn get_highscore(user: &String) -> Option<u64> {
+#[warn(unused_must_use)]
+pub fn get_highscore(player: &String) -> Option<u64> {
+    if player == "" {
+        return Some(0);
+    }
+
     // Creating file if not exists else just open
     if !(Path::new("users.json").exists()) {
         File::create("users.json");
@@ -18,14 +23,15 @@ pub fn get_highscore(user: &String) -> Option<u64> {
 
     // Getting high score
     let json: JsonValue = from_str(&data).unwrap();
-    let x = json[user].as_u64();
+    let x = json[player].as_u64();
     match x {
         Some(score) => Some(score),
         None => Some(0),
     }
 }
 
-pub fn set_new_highscore(user: &String, highscore: u64) {
+#[warn(unused_must_use)]
+pub fn set_new_highscore(player: &String, highscore: u64) {
     // Opening file with write priviledges
     let mut file = OpenOptions::new()
         .write(true)
@@ -42,7 +48,7 @@ pub fn set_new_highscore(user: &String, highscore: u64) {
 
     let mut json_map: HashMap<&str, JsonValue> = from_str(&data).unwrap();
 
-    json_map.insert(user, JsonValue::from(highscore));
+    json_map.insert(player, JsonValue::from(highscore));
     // let mut json: JsonValue = from_str(&data).unwrap();
     let json: JsonValue = to_value(json_map).unwrap();
     to_writer(file, &json);
