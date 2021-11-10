@@ -77,7 +77,6 @@ impl Snake {
 
     pub fn check_food_eat(&mut self, food: &Food, window: &pancurses::Window) -> bool {
         if self.head == food.coord {
-            window.mvaddch(food.coord.0, food.coord.1, ' ');
             return true;
         }
         false
