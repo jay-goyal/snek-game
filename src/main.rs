@@ -108,7 +108,7 @@ fn main() {
         window.mvprintw(1, mx - 15, format!("Press Q to quit"));
 
         // Checking if snake has eaten food
-        if snake.check_food_eat(&food, &window) {
+        if snake.check_food_eat(&food) {
             score += 1;
             if score >= highscore {
                 highscore = score;

@@ -14,5 +14,3 @@ cargo run --release [YOUR-PLAYER-NAME]
   #+end_src
 
   Giving a player name is mandatory as of now. It will be fixed given time.
-
-**** TODO:Make the users.json in a fixed directory instead of in the current working directory
