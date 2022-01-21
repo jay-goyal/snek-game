@@ -16,19 +16,19 @@ impl Food {
 
 #[derive(PartialEq)]
 pub enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
+    Up,
+    Down,
+    Left,
+    Right,
 }
 
 impl Direction {
     pub fn opp(&self) -> Direction {
         match self {
-            Direction::UP => Direction::DOWN,
-            Direction::DOWN => Direction::UP,
-            Direction::LEFT => Direction::RIGHT,
-            Direction::RIGHT => Direction::LEFT,
+            Direction::Up => Direction::Down,
+            Direction::Down => Direction::Up,
+            Direction::Left => Direction::Right,
+            Direction::Right => Direction::Left,
         }
     }
 }
@@ -60,10 +60,10 @@ impl Snake {
         tmp.append(&mut self.body);
         self.body = tmp;
         match self.direction {
-            Direction::UP => self.head = (self.head.0 - 1, self.head.1),
-            Direction::DOWN => self.head = (self.head.0 + 1, self.head.1),
-            Direction::LEFT => self.head = (self.head.0, self.head.1 - 1),
-            Direction::RIGHT => self.head = (self.head.0, self.head.1 + 1),
+            Direction::Up => self.head = (self.head.0 - 1, self.head.1),
+            Direction::Down => self.head = (self.head.0 + 1, self.head.1),
+            Direction::Left => self.head = (self.head.0, self.head.1 - 1),
+            Direction::Right => self.head = (self.head.0, self.head.1 + 1),
         }
 
         window.attron(COLOR_PAIR(4));

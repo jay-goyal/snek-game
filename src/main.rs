@@ -55,7 +55,7 @@ fn main() {
             ((my / 2) as i32, (mx / 4 - 1) as i32),
             ((my / 2) as i32, (mx / 4 - 2) as i32),
         ],
-        Direction::RIGHT,
+        Direction::Right,
     );
 
     // Adding Food
@@ -85,10 +85,10 @@ fn main() {
     loop {
         // Getting Keypress
         match window.getch() {
-            Some(Input::KeyRight) => snake.change_direc(Direction::RIGHT),
-            Some(Input::KeyLeft) => snake.change_direc(Direction::LEFT),
-            Some(Input::KeyUp) => snake.change_direc(Direction::UP),
-            Some(Input::KeyDown) => snake.change_direc(Direction::DOWN),
+            Some(Input::KeyRight) => snake.change_direc(Direction::Right),
+            Some(Input::KeyLeft) => snake.change_direc(Direction::Left),
+            Some(Input::KeyUp) => snake.change_direc(Direction::Up),
+            Some(Input::KeyDown) => snake.change_direc(Direction::Down),
             Some(Input::Character('q')) => break,
             _ => (),
         }
